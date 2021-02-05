@@ -2,6 +2,7 @@ const jobDropDown = document.querySelector("#title");
 const otherJobText = document.querySelector("#other-job-role");
 const tShirtColor = document.querySelector("#color");
 const tShirtDesign = document.querySelector("#design");
+const tShirtColorOpt = tShirtColor.querySelectorAll("option");
 //Function for when the page loads
 const startUp = () => {
     //Name input
@@ -26,10 +27,17 @@ jobDropDown.addEventListener("change", (e) => {
 });
 //Event listener in case a value is changed in the tshirt design drop down.
 tShirtDesign.addEventListener("change", (e) =>{
-
-
+  tShirtColor.disabled = false;
+  tShirtColor.innerHTML = "";
+  for(let i =0; i < tShirtColorOpt.length; i++){
+    if(e.target.value === "js puns" && tShirtColorOpt[i].getAttribute("data-theme") === "js puns"){
+      tShirtColor.appendChild(tShirtColorOpt[i]);
+    }
+    else if(e.target.value === "heart js" && tShirtColorOpt[i].getAttribute("data-theme") === "heart js"){
+      tShirtColor.appendChild(tShirtColorOpt[i]);
+    }
+  }
 });
-
 
 //calls the start up function
 startUp();
