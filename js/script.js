@@ -1,22 +1,38 @@
+const nameInput = document.querySelector("#name");
+const emailInput = document.querySelector("#email");
 const jobDropDown = document.querySelector("#title");
 const otherJobText = document.querySelector("#other-job-role");
 const tShirtColor = document.querySelector("#color");
 const tShirtDesign = document.querySelector("#design");
 const tShirtColorOpt = tShirtColor.querySelectorAll("option");
 const fieldActivities = document.querySelector("#activities");
+const activityCheckBox = fieldActivities.querySelectorAll("input[type='checkbox']");
 const activitiesTotalHTML = document.querySelector("#activities-cost");
+const selectPayment = document.querySelector("#payment");
+const payPal = document.querySelector("#paypal");
+const bitCoin = document.querySelector("#bitcoin");
+const creditCard = document.querySelector("#credit-card");
+const creditCardNum = document.querySelector("#cc-num");
+const zipCodeNum = document.querySelector("#zip");
+const cvvNum = document.querySelector("#cvv");
+const form = fieldActivities.parentNode;
+
 let activitiesTotal = 0;
 
 //Function for when the page loads
 const startUp = () => {
-  //Name input
-  const nameInput = document.querySelector("#name");
+  
   //Puts focus on name input
   nameInput.focus();
   //Removes the display of the other text field
   otherJobText.style.display = "none";
+
+  payPal.style.display = "none";
+  bitCoin.style.display = "none";
   //disables the drop down for the tshirt color
   tShirtColor.disabled = true;
+
+  selectPayment.value = "credit-card";
 };
 //Event listener for when the job drop down changes value
 jobDropDown.addEventListener("change", (e) => {
@@ -61,5 +77,54 @@ fieldActivities.addEventListener("change", (e) => {
   }
 });
 
+selectPayment.addEventListener("change", (e) => {
+  const typeOfPayment = document.getElementById(e.target.value);
+
+  payPal.style.display = "none";
+  bitCoin.style.display = "none";
+  creditCard.style.display = "none";
+
+  typeOfPayment.style.display = "block";
+});
+
+form.addEventListener("submit", (e) => {
+    const nameTest = /^[a-z]+[a-z ]+$/i;
+    const emailTest = /^[^@]+@[^@.]+\.com/;
+    const cardNumTest = /^\d{13,16}$/;
+    const zipCodeTest = /^\d{5}$/;
+    const cvvTest = /^\d{3}$/;
+    
+    if(nameTest.test(nameInput.value)){
+      nameInput.parentNode.className+= "valid";
+      nameInput.parentNode.classList.remove("not-valid");
+      nameInput.nextElementSibling.style.display = "none";
+    }
+    else{
+      e.preventDefault();
+      nameInput.parentNode.className += "not-valid";
+    }
+
+
+    if(!(nameTest.test(nameInput.value) || emailTest.test(emailInput.value))){
+      e.preventDefault();
+    }
+    if(activitiesTotalHTML.textContent === "Total: $0"){
+      e.preventDefault();
+      }
+    if(selectPayment.value === "credit-card" && !(cardNumTest.test(creditCardNum.value)) || !(zipCodeTest.test(zipCodeNum.value)) || !(cvvTest.test(cvvNum.value))){
+      e.preventDefault();
+    }
+    
+});
+for(let i =0; i < activityCheckBox.length; i++){
+  activityCheckBox[i].addEventListener("focus", (e) =>{
+    e.target.parentNode.className = "focus";
+
+  });
+  activityCheckBox[i].addEventListener("blur", (e)=>{
+    e.target.parentNode.classList.remove("focus");
+  });
+}
 //calls the start up function
 startUp();
+console.log(activitiesTotalHTML.textContent);
