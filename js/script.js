@@ -6,7 +6,9 @@ const tShirtColor = document.querySelector("#color");
 const tShirtDesign = document.querySelector("#design");
 const tShirtColorOpt = tShirtColor.querySelectorAll("option");
 const fieldActivities = document.querySelector("#activities");
-const activityCheckBox = fieldActivities.querySelectorAll("input[type='checkbox']");
+const activityCheckBox = fieldActivities.querySelectorAll(
+  "input[type='checkbox']"
+);
 const activitiesTotalHTML = document.querySelector("#activities-cost");
 const selectPayment = document.querySelector("#payment");
 const payPal = document.querySelector("#paypal");
@@ -21,7 +23,6 @@ let activitiesTotal = 0;
 
 //Function for when the page loads
 const startUp = () => {
-  
   //Puts focus on name input
   nameInput.focus();
   //Removes the display of the other text field
@@ -34,6 +35,18 @@ const startUp = () => {
 
   selectPayment.value = "credit-card";
 };
+const checkInput = (regexTest, input, eventObj) => {
+  if (regexTest.test(input.value)) {
+    input.parentNode.className += " valid";
+    input.parentNode.classList.remove("not-valid");
+    input.nextElementSibling.style.display = "none";
+  } else {
+    eventObj.preventDefault();
+    input.parentNode.className += " not-valid";
+    input.nextElementSibling.style.display = "block";
+  }
+};
+
 //Event listener for when the job drop down changes value
 jobDropDown.addEventListener("change", (e) => {
   //if the other job drop down selection is selected
@@ -50,15 +63,7 @@ tShirtDesign.addEventListener("change", (e) => {
   tShirtColor.disabled = false;
   tShirtColor.innerHTML = "";
   for (let i = 0; i < tShirtColorOpt.length; i++) {
-    if (
-      e.target.value === "js puns" &&
-      tShirtColorOpt[i].getAttribute("data-theme") === "js puns"
-    ) {
-      tShirtColor.appendChild(tShirtColorOpt[i]);
-    } else if (
-      e.target.value === "heart js" &&
-      tShirtColorOpt[i].getAttribute("data-theme") === "heart js"
-    ) {
+    if (e.target.value === tShirtColorOpt[i].getAttribute("data-theme")) {
       tShirtColor.appendChild(tShirtColorOpt[i]);
     }
   }
@@ -88,43 +93,35 @@ selectPayment.addEventListener("change", (e) => {
 });
 
 form.addEventListener("submit", (e) => {
-    const nameTest = /^[a-z]+[a-z ]+$/i;
-    const emailTest = /^[^@]+@[^@.]+\.com/;
-    const cardNumTest = /^\d{13,16}$/;
-    const zipCodeTest = /^\d{5}$/;
-    const cvvTest = /^\d{3}$/;
-    
-    if(nameTest.test(nameInput.value)){
-      nameInput.parentNode.className+= "valid";
-      nameInput.parentNode.classList.remove("not-valid");
-      nameInput.nextElementSibling.style.display = "none";
-    }
-    else{
-      e.preventDefault();
-      nameInput.parentNode.className += "not-valid";
-    }
+  const nameTest = /^[a-z]+[a-z ]+$/i;
+  const emailTest = /^[^@]+@[^@.]+\.com$/i;
+  const cardNumTest = /^\d{13,16}$/;
+  const zipCodeTest = /^\d{5}$/;
+  const cvvTest = /^\d{3}$/;
 
+  checkInput(nameTest, nameInput, e);
+  checkInput(emailTest, emailInput, e);
+  checkInput(cardNumTest, creditCardNum, e);
+  checkInput(zipCodeTest, zipCodeNum, e);
+  checkInput(cvvTest, cvvNum, e);
 
-    if(!(nameTest.test(nameInput.value) || emailTest.test(emailInput.value))){
-      e.preventDefault();
-    }
-    if(activitiesTotalHTML.textContent === "Total: $0"){
-      e.preventDefault();
-      }
-    if(selectPayment.value === "credit-card" && !(cardNumTest.test(creditCardNum.value)) || !(zipCodeTest.test(zipCodeNum.value)) || !(cvvTest.test(cvvNum.value))){
-      e.preventDefault();
-    }
-    
+  if (activitiesTotalHTML.textContent !== "Total: $0") {
+    fieldActivities.className += " valid";
+    fieldActivities.classList.remove("not-valid");
+    fieldActivities.lastElementChild.style.display = "none";
+  } else {
+    e.preventDefault();
+    fieldActivities.className += " not-valid";
+    fieldActivities.lastElementChild.style.display = "block";
+  }
 });
-for(let i =0; i < activityCheckBox.length; i++){
-  activityCheckBox[i].addEventListener("focus", (e) =>{
+for (let i = 0; i < activityCheckBox.length; i++) {
+  activityCheckBox[i].addEventListener("focus", (e) => {
     e.target.parentNode.className = "focus";
-
   });
-  activityCheckBox[i].addEventListener("blur", (e)=>{
+  activityCheckBox[i].addEventListener("blur", (e) => {
     e.target.parentNode.classList.remove("focus");
   });
 }
 //calls the start up function
 startUp();
-console.log(activitiesTotalHTML.textContent);
