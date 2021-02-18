@@ -26,15 +26,27 @@ const startUp = () => {
   //Puts focus on name input
   nameInput.focus();
   //Removes the display of the other text field
-  otherJobText.style.display = "none";
+  hideOrShow(otherJobText,"hide")
 
-  payPal.style.display = "none";
-  bitCoin.style.display = "none";
+  hideOrShow(payPal,"hide");
+  hideOrShow(bitCoin, "hide");
   //disables the drop down for the tshirt color
   tShirtColor.disabled = true;
 
   selectPayment.value = "credit-card";
 };
+
+const hideOrShow = (element, command) =>{
+  if(command === "hide"){
+    element.style.display = "none";
+  }
+  else if(command === "show"){
+    element.style.display = "block";
+  }
+  else{
+    console.log("Invalid command");
+  }
+}
 const checkInput = (regexTest, input, eventObj) => {
   if (regexTest.test(input.value)) {
     input.parentNode.className += " valid";
@@ -55,7 +67,7 @@ jobDropDown.addEventListener("change", (e) => {
     otherJobText.style.display = "block";
   } else {
     //else if another selection is selected then remove the other job text field in case it is visible on the web page
-    otherJobText.style.display = "none";
+    hideOrShow(otherJobText, "hide");
   }
 });
 //Event listener in case a value is changed in the tshirt design drop down.
@@ -85,11 +97,11 @@ fieldActivities.addEventListener("change", (e) => {
 selectPayment.addEventListener("change", (e) => {
   const typeOfPayment = document.getElementById(e.target.value);
 
-  payPal.style.display = "none";
-  bitCoin.style.display = "none";
-  creditCard.style.display = "none";
+  hideOrShow(payPal,"hide");
+  hideOrShow(bitCoin, "hide");
+  hideOrShow(creditCard,"hide");
 
-  typeOfPayment.style.display = "block";
+  hideOrShow(typeOfPayment, "show");
 });
 
 form.addEventListener("submit", (e) => {
@@ -108,11 +120,11 @@ form.addEventListener("submit", (e) => {
   if (activitiesTotalHTML.textContent !== "Total: $0") {
     fieldActivities.className += " valid";
     fieldActivities.classList.remove("not-valid");
-    fieldActivities.lastElementChild.style.display = "none";
+    hideOrShow(fieldActivities.lastElementChild, "hide");
   } else {
     e.preventDefault();
     fieldActivities.className += " not-valid";
-    fieldActivities.lastElementChild.style.display = "block";
+    hideOrShow(fieldActivities.lastElementChild, "show");
   }
 });
 for (let i = 0; i < activityCheckBox.length; i++) {
