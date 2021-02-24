@@ -47,7 +47,6 @@ const startUp = () => {
  * @param {HTML} element - The element to be hidden or shown.
  * @param {string} command - A string to represent hide or show depending on the purpose.
  */
-//Function to show or hide the given eleme
 const hideOrShow = (element, command) => {
   if (command === "hide") {
     element.style.display = "none";
@@ -58,15 +57,21 @@ const hideOrShow = (element, command) => {
   }
 };
 
+/**
+ * Checks to see if any checked activity checkbox conflicts with each other in terms of time and date.
+ *
+ * @param {HTML} element - The checkbox that is checked or unchecked.
+ */
 const checkIfConflict = (currentTarget) => {
   const targetDayandTime = currentTarget.getAttribute("data-day-and-time");
   const targetName = currentTarget.getAttribute("name");
-
+  //For loop to loop through all of the activities
   for (let i = 1; i < activityCheckBox.length; i++) {
     const activityDateTime = activityCheckBox[i].getAttribute("data-day-and-time");
     const activityName = activityCheckBox[i].getAttribute("name");
 
     if (currentTarget.checked === true) {
+      //Comparing the date and time of the clicked checkbox(targetDayandTime) to the one we are up to in the collection(activityDateTime).
       if (targetDayandTime === activityDateTime && targetName !== activityName) {
         activityCheckBox[i].parentNode.className += " disabled";
         activityCheckBox[i].disabled = true;
@@ -79,7 +84,7 @@ const checkIfConflict = (currentTarget) => {
 };
 /**
  *Applies styling and will prevent the form from submiting depending on the outcome of the input value and the regex test.
- *
+ *Also tests to see if the credit card field is empty or entered incorrectly.
  * @param {regex} regexTest - The regex test to test the inputs.
  * @param {HTML} input - The input whose value will be tested against the passed regex.
  * @param {object} eventObj - The event target to be used to prevent the submition of the page
@@ -189,7 +194,7 @@ form.addEventListener("submit", (e) => {
     hideOrShow(fieldActivities.lastElementChild, "show");
   }
 });
-
+//Event Listener on credit card number field everytime the user types.
 creditCardNum.addEventListener("keyup", (e) =>{
   checkInput(cardNumTest, creditCardNum, e);
 });
