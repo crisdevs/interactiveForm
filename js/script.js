@@ -24,7 +24,6 @@ let activitiesTotal = 0;
 //Regex made public so I can make it available for submit and keyup event listener
 const cardNumTest = /^\d{13,16}$/;
 
-
 /**
  * Puts focus on the name input, hides elements, disables t-shirt color selection element, and sets the value of the payment option to credit card.
  */
@@ -67,12 +66,17 @@ const checkIfConflict = (currentTarget) => {
   const targetName = currentTarget.getAttribute("name");
   //For loop to loop through all of the activities
   for (let i = 1; i < activityCheckBox.length; i++) {
-    const activityDateTime = activityCheckBox[i].getAttribute("data-day-and-time");
+    const activityDateTime = activityCheckBox[i].getAttribute(
+      "data-day-and-time"
+    );
     const activityName = activityCheckBox[i].getAttribute("name");
 
     if (currentTarget.checked === true) {
       //Comparing the date and time of the clicked checkbox(targetDayandTime) to the one we are up to in the collection(activityDateTime).
-      if (targetDayandTime === activityDateTime && targetName !== activityName) {
+      if (
+        targetDayandTime === activityDateTime &&
+        targetName !== activityName
+      ) {
         activityCheckBox[i].parentNode.className += " disabled";
         activityCheckBox[i].disabled = true;
       }
@@ -101,21 +105,15 @@ const checkInput = (regexTest, input, eventObj) => {
     input.parentNode.className += " not-valid";
     hideOrShow(hint, "show");
 
-if(input.getAttribute("name") === "user-cc-num"){
-    if(spaceTest.test(input.value) || input.value.length === 0){
-      hint.textContent = "Credit card field can't be blank";
-    }
-    else{
-      hint.textContent = "Credit card number must be between 13 - 16 digits";
+    if (input.getAttribute("name") === "user-cc-num") {
+      if (spaceTest.test(input.value) || input.value.length === 0) {
+        hint.textContent = "Credit card field can't be blank";
+      } else {
+        hint.textContent = "Credit card number must be between 13 - 16 digits";
+      }
     }
   }
-}
-
 };
-
-
-
-
 
 //Event listener for when the job drop down changes value
 jobDropDown.addEventListener("change", (e) => {
@@ -177,7 +175,7 @@ form.addEventListener("submit", (e) => {
   const emailTest = /^[^@]+@[^@.]+\.com$/i;
   const zipCodeTest = /^\d{5}$/;
   const cvvTest = /^\d{3}$/;
-  
+
   checkInput(nameTest, nameInput, e);
   checkInput(emailTest, emailInput, e);
   checkInput(cardNumTest, creditCardNum, e);
@@ -195,7 +193,7 @@ form.addEventListener("submit", (e) => {
   }
 });
 //Event Listener on credit card number field everytime the user types.
-creditCardNum.addEventListener("keyup", (e) =>{
+creditCardNum.addEventListener("keyup", (e) => {
   checkInput(cardNumTest, creditCardNum, e);
 });
 
