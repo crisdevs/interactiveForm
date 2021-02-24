@@ -178,9 +178,12 @@ form.addEventListener("submit", (e) => {
 
   checkInput(nameTest, nameInput, e);
   checkInput(emailTest, emailInput, e);
-  checkInput(cardNumTest, creditCardNum, e);
-  checkInput(zipCodeTest, zipCodeNum, e);
-  checkInput(cvvTest, cvvNum, e);
+
+  if (selectPayment.value === "credit-card") {
+    checkInput(cardNumTest, creditCardNum, e);
+    checkInput(zipCodeTest, zipCodeNum, e);
+    checkInput(cvvTest, cvvNum, e);
+  }
   //Checks that the activity selection has at least one checked and checks by checking if the total is greater than zero or not.
   if (activitiesTotalHTML.textContent !== "Total: $0") {
     fieldActivities.className += " valid";
